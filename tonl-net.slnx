@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Tonl.Net/Tonl.Net.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Tonl.Net.Tests/Tonl.Net.Tests.csproj" />
+  </Folder>
+</Solution>

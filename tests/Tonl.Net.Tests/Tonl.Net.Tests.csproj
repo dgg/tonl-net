@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<!-- Unit Tests -->
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<!-- Microsoft Testing Platform -->
+	<PropertyGroup>
+		<EnableNUnitRunner>true</EnableNUnitRunner>
+		<OutputType>Exe</OutputType>
+		<TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
+
+		<EnableStaticNativeInstrumentation>false</EnableStaticNativeInstrumentation>
+		<EnableDynamicNativeInstrumentation>false</EnableDynamicNativeInstrumentation>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0"/>
+		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.5.2"/>
+		<PackageReference Include="NUnit" Version="4.5.1"/>
+		<PackageReference Include="NUnit.Analyzers" Version="4.12.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit3TestAdapter" Version="6.1.0"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="NUnit.Framework"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Tonl.Net\Tonl.Net.csproj"/>
+	</ItemGroup>
+
+</Project>

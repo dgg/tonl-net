@@ -1,0 +1,6 @@
+{
+	"Configuration": {
+		"CoverageFileName": "Tonl.Net.cobertura.xml",
+		"Format": "cobertura"
+	}
+}
