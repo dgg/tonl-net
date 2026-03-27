@@ -6,13 +6,13 @@ namespace Tonl.Net;
 /// <summary>
 /// Provides the high-level interface for working with TONL documents.
 /// </summary>
-/// <param name="node">The underlying document.</param>
-public class TonlDocument(JsonNode? node)
+/// <param name="root">The underlying document.</param>
+public partial class TonlDocument(JsonNode? root)
 {
 	/// <summary>
 	/// Gets the underlying document associated with the TONL document.
 	/// </summary>
-	public JsonNode? Node => node;
+	public JsonNode? Root => root;
 
 	/// <summary>
 	/// Converts the specified data to a TONL document.
