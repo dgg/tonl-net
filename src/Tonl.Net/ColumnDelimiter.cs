@@ -84,5 +84,41 @@ internal static class ColumnDelimiterExtensions
 			bool contained = value.Contains(delimiter.asChar(), StringComparison.Ordinal);
 			return contained;
 		}
+
+		internal char AsChar() => delimiter.asChar();
+	}
+}
+
+internal static class ColumnDelimiterParser
+{
+	/// <summary>
+	/// Attempts to parse the escaped delimiter string found in a <c>#delimiter</c> header.
+	/// Recognises <c>","</c>, <c>"|"</c>, <c>";"</c>, <c>"\\t"</c> (two-character escape sequence),
+	/// and a literal tab character.
+	/// </summary>
+	/// <param name="escaped">The escaped delimiter value from the header.</param>
+	/// <param name="result">The parsed <see cref="ColumnDelimiter"/> when successful.</param>
+	/// <returns><see langword="true"/> if the value was recognised; otherwise <see langword="false"/>.</returns>
+	internal static bool TryParse(string escaped, out ColumnDelimiter result)
+	{
+		switch (escaped)
+		{
+			case ",":
+				result = ColumnDelimiter.Comma;
+				return true;
+			case "|":
+				result = ColumnDelimiter.Pipe;
+				return true;
+			case ";":
+				result = ColumnDelimiter.Semicolon;
+				return true;
+			case "\\t":
+			case "\t":
+				result = ColumnDelimiter.Tab;
+				return true;
+			default:
+				result = ColumnDelimiter.Comma;
+				return false;
+		}
 	}
 }
