@@ -37,3 +37,15 @@ TONL (Token-Optimized Notation Language) library for .NET
 	      a: 3
 	      c: 4
 	```
+ - in "Transformation Examples" example 1.2, when strings contain quotes, the example says that quotes
+should be duplicated, but the js implementation escapes with a backslash inside the quoted string
+- according to "Transformation Examples" example 2.1, root should be missing  and zero-level should be the user,
+but js implementation maintains the root
+- according to "Transformation Examples" example 2.2, flat objects should be single lined, but in the js implementation
+are multi-line
+- according to "Transformation Examples" example 2.3, flat objects should be one-liners, and version should not be quoted
+but js version multilines objects and quotes version
+- according to "Transformation Examples" example 3.1, long lines of arrays should be moved to next line,
+but in the js library long arrays are also one-liners.
+- Two-line behavior for logn arrays is also mentioned in IMPLEMENTATION_REFERENCE, rule 3, but discarded in js implementation
+- 
