@@ -87,9 +87,19 @@ public partial class TonlDocument
 
 		if (value.TryGetValue(out double doubleVal))
 		{
-			return !double.IsFinite(doubleVal)
-				? "null"
-				: doubleVal.ToString("G", CultureInfo.InvariantCulture);
+			if (double.IsPositiveInfinity(doubleVal))
+			{
+				return "Infinity";
+			}
+			if (double.IsNegativeInfinity(doubleVal))
+			{
+				return "-Infinity";
+			}
+			if (double.IsNaN(doubleVal))
+			{
+				return "NaN";
+			}
+			return doubleVal.ToString("G", CultureInfo.InvariantCulture);
 		}
 
 		return value.TryGetValue(out string? strVal)
