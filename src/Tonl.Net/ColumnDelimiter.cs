@@ -67,16 +67,14 @@ internal static class ColumnDelimiterExtensions
 			}
 		}
 
-		internal string JoinTightly(IEnumerable<string> rowValues)
-		{
-			char separator = delimiter.asChar();
-			string row = string.Join(separator, rowValues);
-			return row;
-		}
-
 		internal string JoinComfortably(List<string> parts)
 		{
-			string separator = delimiter.asChar() + " ";
+			string separator = delimiter switch
+			{
+				ColumnDelimiter.Pipe => " | ",
+				ColumnDelimiter.Tab => "\t",
+				_ => delimiter.asChar() + " "
+			};
 			string line = string.Join(separator, parts);
 			return line;
 		}
