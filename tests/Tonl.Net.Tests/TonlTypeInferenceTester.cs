@@ -1,12 +1,11 @@
 using System.Text.Json.Nodes;
-using Tonl.Net;
 
 namespace Tonl.Net.Tests;
 
 [TestFixture]
 public class TonlTypeInferenceTester
 {
-	// ── InferType ─────────────────────────────────────────────────────────────
+	#region InferType
 
 	[Test]
 	public void InferType_Null_Null() =>
@@ -60,14 +59,16 @@ public class TonlTypeInferenceTester
 	public void InferType_JsonArray_List() =>
 		Assert.That(new JsonArray().InferType(), Is.EqualTo("list"));
 
-	// ── IsUniformObjectArray ──────────────────────────────────────────────────
+	#endregion
+
+	#region IsUniformObjectArray
 
 	[Test]
 	public void IsUniformObjectArray_AllSameKeys_True()
 	{
 		var arr = new JsonArray(
-			new JsonObject { ["a"] = 1, ["b"] = 2 },
-			new JsonObject { ["a"] = 3, ["b"] = 4 }
+			new JsonObject { {"a", 1}, {"b", 2} },
+			new JsonObject { {"a", 3}, {"b", 4} }
 		);
 		Assert.That(arr.IsUniformObjectArray(), Is.True);
 	}
@@ -76,8 +77,8 @@ public class TonlTypeInferenceTester
 	public void IsUniformObjectArray_DifferentKeys_False()
 	{
 		var arr = new JsonArray(
-			new JsonObject { ["a"] = 1 },
-			new JsonObject { ["b"] = 2 }
+			new JsonObject { {"a", 1} },
+			new JsonObject { {"b", 2} }
 		);
 		Assert.That(arr.IsUniformObjectArray(), Is.False);
 	}
@@ -89,46 +90,42 @@ public class TonlTypeInferenceTester
 	[Test]
 	public void IsUniformObjectArray_NonObjectElement_False()
 	{
-		var arr = new JsonArray(new JsonObject { ["a"] = 1 }, JsonValue.Create(42));
+		var arr = new JsonArray(new JsonObject { {"a", 1} }, JsonValue.Create(42));
 		Assert.That(arr.IsUniformObjectArray(), Is.False);
 	}
 
-	// ── IsSemiUniformObjectArray ──────────────────────────────────────────────
+	#endregion
 
 	[Test]
 	public void IsSemiUniformObjectArray_SeventyPercentOverlap_True()
 	{
 		// Union keys: a, b, c, d, e (5). Each object has 4 → overlap = 4/5 = 0.8 per object
 		var arr = new JsonArray(
-			new JsonObject { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["d"] = 4 },
-			new JsonObject { ["a"] = 1, ["b"] = 2, ["c"] = 3, ["e"] = 5 }
+			new JsonObject { {"a", 1}, {"b", 2}, {"c", 3}, {"d", 4} },
+			new JsonObject { {"a", 1}, {"b", 2}, {"c", 3}, {"e", 5} }
 		);
 		Assert.That(arr.IsSemiUniformObjectArray(), Is.True);
 	}
-
-	// ── GetAllColumns ─────────────────────────────────────────────────────────
 
 	[Test]
 	public void GetAllColumns_SortedUnionOfAllKeys()
 	{
 		var arr = new JsonArray(
-			new JsonObject { ["z"] = 1, ["a"] = 2 },
-			new JsonObject { ["m"] = 3, ["a"] = 4 }
+			new JsonObject { {"z", 1}, {"a", 2} },
+			new JsonObject { {"m", 3}, {"a", 4} }
 		);
 		IReadOnlyList<string> cols = arr.GetAllColumns();
-		Assert.That(cols, Is.EqualTo(new[] { "a", "m", "z" }));
+		Assert.That(cols, Is.EqualTo(["a", "m", "z"]));
 	}
-
-	// ── GetUniformColumns ─────────────────────────────────────────────────────
 
 	[Test]
 	public void GetUniformColumns_SortedKeysOfFirstElement()
 	{
 		var arr = new JsonArray(
-			new JsonObject { ["z"] = 1, ["a"] = 2 },
-			new JsonObject { ["z"] = 3, ["a"] = 4 }
+			new JsonObject { {"z", 1}, {"a", 2} },
+			new JsonObject { {"z", 3}, {"a", 4} }
 		);
 		IReadOnlyList<string> cols = arr.GetUniformColumns();
-		Assert.That(cols, Is.EqualTo(new[] { "a", "z" }));
+		Assert.That(cols, Is.EqualTo(["a", "z"]));
 	}
 }
