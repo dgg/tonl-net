@@ -18,13 +18,13 @@ public record TonlEncodeOptions
 	/// (e.g., <c>age:u32</c>, <c>name:str</c>). Structural types (<c>obj</c> and <c>list</c>)
 	/// are never emitted as type hints. Defaults to <see langword="false"/>.
 	/// </summary>
-	public bool IncludeTypes { get; init; } = false;
+	public bool IncludeTypes { get; init; }
 
 	/// <summary>
 	/// Gets the TONL version string written to the <c>#version</c> header.
 	/// Defaults to <c>"1.0"</c>.
 	/// </summary>
-	public string Version { get; init; } = "1.0";
+	public TonlVersion Version { get; init; } = TonlVersion.Default;
 
 	/// <summary>
 	/// Gets the number of spaces used per nesting level when indenting object and array bodies.
