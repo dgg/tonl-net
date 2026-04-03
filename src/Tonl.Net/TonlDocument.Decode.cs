@@ -28,10 +28,6 @@ public partial class TonlDocument
 		return new TonlDocument(root);
 	}
 
-	// -------------------------------------------------------------------------
-	// Internal helpers shared between encoder and decoder
-	// -------------------------------------------------------------------------
-
 	internal enum LineType
 	{
 		Blank,
@@ -58,10 +54,9 @@ public partial class TonlDocument
 
 	internal readonly record struct ColumnDef(string Name, string? TypeHint);
 
-	// -------------------------------------------------------------------------
-	// Private nested decoder class — isolates all mutable parsing state
-	// -------------------------------------------------------------------------
-
+	/// <summary>
+	/// Isolates all mutable parsing state.
+	/// </summary>
 	private sealed class TonlDecoder
 	{
 		private readonly string[] _lines;
@@ -137,10 +132,6 @@ public partial class TonlDocument
 			}
 		}
 
-		// -------------------------------------------------------------------------
-		// Indent detection
-		// -------------------------------------------------------------------------
-
 		private void detectIndentSize()
 		{
 			int prevIndent = -1;
@@ -165,10 +156,6 @@ public partial class TonlDocument
 			// Default
 			_indentSize = 2;
 		}
-
-		// -------------------------------------------------------------------------
-		// parseRoot
-		// -------------------------------------------------------------------------
 
 		private JsonNode? parseRoot()
 		{
@@ -260,10 +247,6 @@ public partial class TonlDocument
 					return null;
 			}
 		}
-
-		// -------------------------------------------------------------------------
-		// parseObjectBody
-		// -------------------------------------------------------------------------
 
 		private JsonObject parseObjectBody(int bodyIndent, ColumnDef[]? columns)
 		{
@@ -386,10 +369,6 @@ public partial class TonlDocument
 			return obj;
 		}
 
-		// -------------------------------------------------------------------------
-		// parseTabularRows
-		// -------------------------------------------------------------------------
-
 		private JsonArray parseTabularRows(int rowIndent, int count, ColumnDef[] columns)
 		{
 			var arr = new JsonArray();
@@ -450,10 +429,6 @@ public partial class TonlDocument
 
 			return arr;
 		}
-
-		// -------------------------------------------------------------------------
-		// parseMixedArrayBody
-		// -------------------------------------------------------------------------
 
 		private JsonArray parseMixedArrayBody(int bodyIndent, int count)
 		{
@@ -593,10 +568,6 @@ public partial class TonlDocument
 			return result;
 		}
 
-		// -------------------------------------------------------------------------
-		// parsePrimitiveArrayInline
-		// -------------------------------------------------------------------------
-
 		private JsonArray parsePrimitiveArrayInline(string rawValues, int count)
 		{
 			List<string> fields = splitDelimited(rawValues);
@@ -615,10 +586,6 @@ public partial class TonlDocument
 
 			return arr;
 		}
-
-		// -------------------------------------------------------------------------
-		// classifyLine
-		// -------------------------------------------------------------------------
 
 		private LineInfo classifyLine(int lineIndex)
 		{
@@ -816,11 +783,7 @@ public partial class TonlDocument
 			return new LineInfo(LineType.ObjectHeader, indent, key, -1, colsRaw, null);
 		}
 
-		// -------------------------------------------------------------------------
-		// Key extraction
-		// -------------------------------------------------------------------------
-
-		/// <summary>
+		// <summary>
 		/// Extracts a key from the start of <paramref name="content"/>, handling quoted keys.
 		/// Returns the key (unquoted) and sets <paramref name="keyEnd"/> to the character position
 		/// immediately after the key in <paramref name="content"/>.
@@ -889,10 +852,6 @@ public partial class TonlDocument
 				return content[..i];
 			}
 		}
-
-		// -------------------------------------------------------------------------
-		// splitDelimited — state machine for tabular/inline values
-		// -------------------------------------------------------------------------
 
 		private List<string> splitDelimited(string raw)
 		{
@@ -1178,10 +1137,6 @@ public partial class TonlDocument
 			}
 		}
 
-		// -------------------------------------------------------------------------
-		// unquote
-		// -------------------------------------------------------------------------
-
 		private static string unquote(string raw)
 		{
 			if (raw.StartsWith("\"\"\"", StringComparison.Ordinal) && raw.Length >= 6)
@@ -1234,10 +1189,6 @@ public partial class TonlDocument
 			return sb.ToString();
 		}
 
-		// -------------------------------------------------------------------------
-		// parseColumnDefs
-		// -------------------------------------------------------------------------
-
 		private ColumnDef[] parseColumnDefs(string columnsRaw)
 		{
 			if (columnsRaw.Trim().Length == 0)
@@ -1278,9 +1229,7 @@ public partial class TonlDocument
 			return defs;
 		}
 
-		// -------------------------------------------------------------------------
-		// Utilities
-		// -------------------------------------------------------------------------
+		
 
 		private int getIndent(int lineIndex)
 		{
